@@ -1,0 +1,59 @@
+USE feedlot;
+
+DROP TABLE IF EXISTS `provider`;
+CREATE TABLE `provider` (
+`id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+`name` TEXT NOT NULL,
+`cif` TEXT);
+
+DROP TABLE IF EXISTS `guide`;
+CREATE TABLE `guide` (
+`num_guide` INTEGER PRIMARY KEY NOT NULL,
+`cost` FLOAT NOT NULL,
+`price_males` FLOAT NOT NULL,
+`price_females` FLOAT NOT NULL,
+`date` TIMESTAMP NOT NULL,
+`num_male` INTEGER NOT NULL,
+`num_female` INTEGER NOT NULL,
+`kg_male` FLOAT NOT NULL,
+`kg_female` FLOAT NOT NULL,
+`provider` INTEGER NOT NULL,
+FOREIGN KEY (`provider`) REFERENCES `provider` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION);
+
+DROP TABLE IF EXISTS `calf`;
+CREATE TABLE `calf` (
+`crotal` INTEGER PRIMARY KEY NOT NULL,
+`weight` FLOAT NOT NULL,
+`gender` CHAR(8) NOT NULL,
+`nationality` CHAR(2) NOT NULL);
+
+DROP TABLE IF EXISTS `belong`;
+CREATE TABLE `belong` (
+`num_guide` INTEGER NOT NULL,
+`num_crotal` INTEGER NOT NULL,
+FOREIGN KEY (`num_guide`) REFERENCES `guide` (`num_guide`) ON UPDATE NO ACTION ON DELETE NO ACTION,
+FOREIGN KEY (`num_crotal`) REFERENCES `calf` (`crotal`) ON UPDATE NO ACTION ON DELETE NO ACTION);
+
+DROP TABLE IF EXISTS `worker`;
+CREATE TABLE `worker` (
+`id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+`name` TEXT NOT NULL,
+`surnane` TEXT NOT NULL,
+`salary` FLOAT NOT NULL);
+
+DROP TABLE IF EXISTS `shopping`;
+CREATE TABLE `shopping` (
+`id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+`delivery_note` FLOAT NOT NULL,
+`cost` FLOAT NOT NULL,
+`kg` FLOAT NOT NULL,
+`date` TIMESTAMP NOT NULL,
+`provider` INTEGER NOT NULL,
+`type_product` INTEGER NOT NULL,
+FOREIGN KEY (`provider`) REFERENCES `provider` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION,
+FOREIGN KEY (`type_product`) REFERENCES `product` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION);
+
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE `product` (
+`id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+`name` TEXT NOT NULL);
